@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "configurePresets": [
+    {
+      "name": "vs2022-direct",
+      "generator": "Visual Studio 17 2022",
+      "toolset": "v143",
+      "binaryDir": "${sourceDir}/build",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "Fallout4Path": "C:/Games/Fallout 4 VR",
+        "COPY_BUILD": false,
+        "VCPKG_MANIFEST_MODE": "OFF"
+      }
+    }
+  ]
+}

@@ -27,7 +27,7 @@ extern "C" DLLEXPORT bool F4SEAPI F4SEPlugin_Query(const F4SE::QueryInterface* a
 	spdlog::set_pattern("%g(%#): [%^%l%$] %v"s);
 
 	a_info->infoVersion = F4SE::PluginInfo::kVersion;
-	a_info->name = "ConsoleUtilF4";
+	a_info->name = "ConsoleUtilF4VR";
 	a_info->version = 1;
 
 	if (a_f4se->IsEditor()) {
@@ -36,7 +36,7 @@ extern "C" DLLEXPORT bool F4SEAPI F4SEPlugin_Query(const F4SE::QueryInterface* a
 	}
 
 	const auto ver = a_f4se->RuntimeVersion();
-	if (ver < F4SE::RUNTIME_1_10_162) {
+	if (ver < F4SE::RUNTIME_VR_1_2_72) {
 		logger::critical("unsupported runtime v{}"sv, ver.string());
 		return false;
 	}

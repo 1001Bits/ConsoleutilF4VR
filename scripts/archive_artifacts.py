@@ -5,7 +5,7 @@ import zlib
 
 def make_rel_archive(a_args):
 	archive = zipfile.ZipFile(a_args.name + ".zip", "w", zipfile.ZIP_DEFLATED)
-	archive.write(a_args.dll, "F4SE/Plugins/{}".format(os.path.basename(a_args.dll)))
+	archive.write(a_args.dll, "F4SEVR/Plugins/{}".format(os.path.basename(a_args.dll)))
 	for root, dirs, files in os.walk(os.getcwd()):
 		for file in files:
 			if file.endswith(".pex"):

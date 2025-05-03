@@ -34,7 +34,7 @@
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": {
           "type": "STRING",
-          "value": "$env{VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake"
+          "value": "C:/Modding/ConsoleutilF4/vcpkg/scripts/buildsystems/vcpkg.cmake"
         }
       },
       "hidden": true,

@@ -17,7 +17,7 @@ set_from_environment(Fallout4Path)
 # ---- Project ----
 
 project(
-	ConsoleUtilF4
+	ConsoleUtilF4VR
 	VERSION 1.0.1
 	LANGUAGES CXX
 )
@@ -86,6 +86,7 @@ target_include_directories(
 	PRIVATE
 		"${CMAKE_CURRENT_BINARY_DIR}/include"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/c++"
+		"C:/Modding/ConsoleutilF4"  # Added include path for rapidcsv.h
 )
 
 target_link_libraries(
@@ -94,6 +95,7 @@ target_link_libraries(
 		CommonLibF4::CommonLibF4
 		fmt::fmt
 		spdlog::spdlog
+		"C:/Modding/ConsoleutilF4/mmio/build/src/Release/mmio.lib"  # Added mmio library
 )
 
 if(MSVC)
@@ -103,6 +105,7 @@ if(MSVC)
 			"/sdl"	# Enable Additional Security Checks
 			"/utf-8"	# Set Source and Executable character sets to UTF-8
 			"/Zi"	# Debug Information Format
+			"/Zc:preprocessor"  # Enable the new preprocessor (for __VA_OPT__)
 
 			"/permissive-"	# Standards conformance
 
@@ -133,8 +136,8 @@ if(COPY_BUILD)
 		add_custom_command(
 			TARGET "${PROJECT_NAME}"
 			POST_BUILD
-			COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_FILE:${PROJECT_NAME}>" "${Fallout4Path}/Data/F4SE/Plugins/"
-			COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_PDB_FILE:${PROJECT_NAME}>" "${Fallout4Path}/Data/F4SE/Plugins/"
+			COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_FILE:${PROJECT_NAME}>" "${Fallout4Path}/Data/F4SEVR/Plugins/"
+			COMMAND "${CMAKE_COMMAND}" -E copy "$<TARGET_PDB_FILE:${PROJECT_NAME}>" "${Fallout4Path}/Data/F4SEVR/Plugins/"
 		)
 	else()
 		message(WARNING "Fallout4Path is not defined. Skipping post-build copy command.")
