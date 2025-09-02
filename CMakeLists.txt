@@ -42,10 +42,14 @@ endif()
 
 # ---- Dependencies ----
 
+
 add_subdirectory("extern/CommonLibF4/CommonLibF4" CommonLibF4)
 
-find_package(fmt REQUIRED CONFIG)
-find_package(spdlog REQUIRED CONFIG)
+# fmt and spdlog were previously required for logging. We now provide an
+# in-project lightweight logger, so treat these packages as optional. If
+# present they'll be used where necessary, otherwise build proceeds.
+find_package(fmt CONFIG)
+find_package(spdlog CONFIG)
 
 # ---- Add source files ----
 
@@ -86,16 +90,26 @@ target_include_directories(
 	PRIVATE
 		"${CMAKE_CURRENT_BINARY_DIR}/include"
 		"${CMAKE_CURRENT_SOURCE_DIR}/src/c++"
-		"C:/Modding/ConsoleutilF4"  # Added include path for rapidcsv.h
+			"${CMAKE_CURRENT_SOURCE_DIR}/.."  # rapidcsv.h lives in workspace root (parent dir)
+			"${CMAKE_CURRENT_SOURCE_DIR}/extern/CommonLibF4/CommonLibF4/include" # bring CommonLibF4 shims (spdlog) into include path
+			"${CMAKE_CURRENT_SOURCE_DIR}/../vcpkg/packages/fmt_x64-windows-static-md-release/include" # vcpkg fmt include
 )
+
+		if(NOT TARGET mmio::mmio)
+			add_library(mmio::mmio INTERFACE IMPORTED)
+			set_target_properties(mmio::mmio PROPERTIES
+				INTERFACE_LINK_LIBRARIES "${CMAKE_CURRENT_SOURCE_DIR}/../mmio/build/src/Release/mmio.lib"
+				INTERFACE_INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/../mmio/include"
+			)
+		endif()
 
 target_link_libraries(
 	"${PROJECT_NAME}"
 	PRIVATE
 		CommonLibF4::CommonLibF4
-		fmt::fmt
-		spdlog::spdlog
-		"C:/Modding/ConsoleutilF4/mmio/build/src/Release/mmio.lib"  # Added mmio library
+		$<$<BOOL:${fmt_FOUND}>:fmt::fmt>
+		$<$<BOOL:${spdlog_FOUND}>:spdlog::spdlog>
+	mmio::mmio  # Use imported interface target for mmio
 )
 
 if(MSVC)

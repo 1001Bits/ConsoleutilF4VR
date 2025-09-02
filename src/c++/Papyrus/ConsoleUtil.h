@@ -34,11 +34,13 @@ namespace Papyrus::ConsoleUtil
 	inline void PrintMessage(std::monostate, std::string_view a_message)
 	{
 		const auto console = RE::ConsoleLog::GetSingleton();
-		console->AddString(
-			fmt::format(
-				FMT_STRING("{}\n"),
-				a_message)
-				.data());
+		if (console) {
+			std::string s;
+			s.reserve(a_message.size() + 1);
+			s.append(a_message);
+			s.push_back('\n');
+			console->AddString(s.c_str());
+		}
 	}
 
 	inline void Bind(RE::BSScript::IVirtualMachine& a_vm)
